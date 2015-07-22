@@ -6,6 +6,8 @@
  * and open the template in the editor.
  */
 
+$time_start = microtime(true);
+
 require __DIR__ . '/src/bizbink/DynDNS/Autoload.php';
 
 $credentials = null;
@@ -79,4 +81,7 @@ $DynDNS = new \bizbink\DynDNS\DynDNS($provider);
 
 $response = $DynDNS->getProvder()->updateRecord($Record, $Domain);
 
-print "[DynDNS] The domain '{$domain}' was updated.\n";
+$time_end = microtime(true);
+$time = $time_end - $time_start;
+
+print "[DynDNS] The domain '{$Domain->getName()}' was updated in {$time} seconds.\n";
