@@ -14,4 +14,4 @@ Flags | Description | Example
 -record-priority | New record priority. | `-record-priority null`
 -record-port | New record port. | `-record-port null`
 -record-weight | New record weight. | `-record-weight null`
---skip-validation | Skip validation, will not output errors. | `--ignore-errors false`
+--ignore-errors | Ignore errors, will not output anything. | `--ignore-errors false`
