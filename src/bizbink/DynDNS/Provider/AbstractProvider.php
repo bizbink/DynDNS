@@ -15,8 +15,8 @@ namespace bizbink\DynDNS\Provider;
  */
 abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
-    public function __construct(array $credentials = null) {
-        $this->credentials = $credentials;
+    public function __construct($config = null) {
+        $this->config = $config;
     }
 
     /**
@@ -45,15 +45,6 @@ abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
     /**
      * 
-     * @param array $credentials 
-     * @return array
-     */
-    public function setCredentials(array $credentials) {
-        return $this->credentials = $credentials;
-    }
-
-    /**
-     * 
      * @param \bizbink\DynDNS\Entity\RecordEntity $record 
      * @return \bizbink\DynDNS\Entity\RecordEntity
      */
@@ -74,7 +65,7 @@ abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
      *
      * @var array
      */
-    protected $credentials;
+    protected $config;
 
     /**
      *

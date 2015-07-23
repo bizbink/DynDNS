@@ -10,38 +10,16 @@ $time_start = microtime(true);
 
 require __DIR__ . '/src/bizbink/DynDNS/Autoload.php';
 
-$credentials = null;
-$provider = null;
+$config = json_decode(file_get_contents('config.json'));
+
+$Domain = new \bizbink\DynDNS\Entity\DomainEntity();
+$Domain->setName($config->{'domain'});
 
 $Record = new \bizbink\DynDNS\Entity\RecordEntity();
-$Domain = new \bizbink\DynDNS\Entity\DomainEntity();
 
 for ($x = 1; $x <= $argc - 1; $x++) {
     switch ($argv[$x]) {
-        case '-t':
-            $credentials = array('token' => $argv[$x + 1]);
-            $x += 1;
-            break;
-        case '-p':
-            $provider = $argv[$x + 1];
-            $x += 1;
-            break;
-        case '-d':
-            $Domain->setName($argv[$x + 1]);
-            $x += 1;
-            break;
-        case '--ignore-errors':
-            if ($x + 1 < $argc) {
-                if (!$argv[$x + 1] == false) {
-                    error_reporting(0);
-                    break;
-                }
-            } else {
-                error_reporting(0);
-                break;
-            }
         case '-record-id':
-
             $Record->setId($argv[$x + 1]);
             break;
         case '-record-type':
@@ -62,12 +40,23 @@ for ($x = 1; $x <= $argc - 1; $x++) {
         case '-record-weight':
             $Record->setWeight($argv[$x + 1]);
             break;
+        case '--ignore-errors':
+            if ($x + 1 < $argc) {
+                if (!$argv[$x + 1] == false) {
+                    error_reporting(0);
+                    break;
+                }
+            } else {
+                error_reporting(0);
+                break;
+            }
     }
 }
 
-switch ($provider) {
-    case 'DigitalOceanProvider':
-        $provider = new bizbink\DynDNS\Provider\DigitalOceanProvider($credentials);
+$provider = null;
+switch ($config->{'provider'}) {
+    case 'DigitalOcean':
+        $provider = new bizbink\DynDNS\Provider\DigitalOceanProvider($config);
         break;
     default:
         throw new \bizbink\DynDNS\Exception\NullProviderException("Provider missing: check usage documentation");

@@ -35,13 +35,6 @@ interface Provider {
 
     /**
      * 
-     * @param array $authentication 
-     * @return array
-     */
-    public function setCredentials(array $authentication);
-
-    /**
-     * 
      * @param \bizbink\DynDNS\Entity\RecordEntity $record 
      * @return \bizbink\DynDNS\Entity\RecordEntity
      */

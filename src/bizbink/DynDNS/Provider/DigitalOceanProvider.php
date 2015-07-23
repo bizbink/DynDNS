@@ -88,7 +88,7 @@ class DigitalOceanProvider extends \bizbink\DynDNS\Provider\AbstractProvider imp
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . $this->credentials['token'],
+            'Authorization: Bearer ' . $this->config->{'credentials'}->{'token'},
             'Content-Type: application/json',
             'Content-Length: ' . strlen($this->data))
         );
