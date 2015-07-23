@@ -9,10 +9,10 @@
 namespace bizbink\DynDNS\Exception;
 
 /**
- * Description of NullProviderException
+ * Description of MissingConfigPropertyException
  *
  * @author Matthew
  */
-class NullProviderException extends \Exception {
+class MissingConfigPropertyException extends \Exception {
     //put your code here
 }

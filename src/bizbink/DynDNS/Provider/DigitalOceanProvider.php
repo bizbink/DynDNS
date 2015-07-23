@@ -47,7 +47,7 @@ class DigitalOceanProvider extends \bizbink\DynDNS\Provider\AbstractProvider imp
     
     private function validateDomainEntity() {
         if(!isset($this->getDomain()->name)) {
-            throw new \bizbink\DynDNS\Exception\NullDomainEntityPropertyException("'-domain-name' flag is not supplied in arguments");
+            throw new \bizbink\DynDNS\Exception\MissingConfigPropertyException("Please check your configuration: 'domain' missing");
         }
     }
 

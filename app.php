@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-$time_start = microtime(true);
+$timeStart = microtime(true);
 
 require __DIR__ . '/src/bizbink/DynDNS/Autoload.php';
 
@@ -59,14 +59,14 @@ switch ($config->{'provider'}) {
         $provider = new bizbink\DynDNS\Provider\DigitalOceanProvider($config);
         break;
     default:
-        throw new \bizbink\DynDNS\Exception\NullProviderException("Provider missing: check usage documentation");
+        throw new \bizbink\DynDNS\Exception\MissingConfigPropertyException("Please check your configuration: 'provider' missing");
 }
 
 $DynDNS = new \bizbink\DynDNS\DynDNS($provider);
 
 $response = $DynDNS->getProvder()->updateRecord($Record, $Domain);
 
-$time_end = microtime(true);
-$time = $time_end - $time_start;
+$timeEnd = microtime(true);
+$time = $timeEnd - $timeStart;
 
 print "[DynDNS] The domain '{$Domain->getName()}' was updated in {$time} seconds.\n";
