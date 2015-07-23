@@ -87,24 +87,24 @@ class DomainEntity {
      *
      * @var string
      */
-    protected $name;
+    public $name;
 
     /**
      *
      * @var int
      */
-    protected $ttl;
+    public $ttl;
 
     /**
      *
      * @var string
      */
-    protected $zoneFile;
+    public $zoneFile;
 
     /**
      *
      * @var string
      */
-    protected $ipAddress;
+    public $ipAddress;
 
 }

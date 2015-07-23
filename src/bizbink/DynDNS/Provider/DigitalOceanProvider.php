@@ -38,10 +38,17 @@ class DigitalOceanProvider extends \bizbink\DynDNS\Provider\AbstractProvider imp
         if (isset($domain)) {
             $this->setDomain($domain);
         }
+        $this->validateDomainEntity();
         $this->buildRecordUpdateCURL();
         $this->executeRecordUpdateCURL();
         $this->validateResponse();
         return $this->getResponse();
+    }
+    
+    private function validateDomainEntity() {
+        if(!isset($this->getDomain()->name)) {
+            throw new \bizbink\DynDNS\Exception\NullDomainEntityPropertyException("'-domain-name' flag is not supplied in arguments");
+        }
     }
 
     /**
