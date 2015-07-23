@@ -17,13 +17,13 @@ interface Provider {
 
     /**
      * 
-     * @return \bizbink\DynDNS\Record
+     * @return \bizbink\DynDNS\Entity\RecordEntity
      */
     public function getRecord();
 
     /**
      * 
-     * @return \bizbink\DynDNS\Domain
+     * @return \bizbink\DynDNS\Entity\DomainEntity
      */
     public function getDomain();
 
@@ -42,23 +42,23 @@ interface Provider {
 
     /**
      * 
-     * @param \bizbink\DynDNS\Record $record 
-     * @return \bizbink\DynDNS\Record
+     * @param \bizbink\DynDNS\Entity\RecordEntity $record 
+     * @return \bizbink\DynDNS\Entity\RecordEntity
      */
-    public function setRecord(\bizbink\DynDNS\Record $record);
+    public function setRecord(\bizbink\DynDNS\Entity\RecordEntity $record);
 
     /**
      * 
-     * @param \bizbink\DynDNS\Domain $domain 
-     * @return \bizbink\DynDNS\Domain
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domain 
+     * @return \bizbink\DynDNS\Entity\DomainEntity
      */
-    public function setDomain(\bizbink\DynDNS\Domain $domain);
+    public function setDomain(\bizbink\DynDNS\Entity\DomainEntity $domain);
 
     /**
      * 
-     * @param \bizbink\DynDNS\Record $record
-     * @param \bizbink\DynDNS\Domain $domain
+     * @param \bizbink\DynDNS\Entity\RecordEntity $record
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domain
      * @return string|bool 
      */
-    public function updateRecord(\bizbink\DynDNS\Record $record = null, \bizbink\DynDNS\Domain $domain = null);
+    public function updateRecord(\bizbink\DynDNS\Entity\RecordEntity $record = null, \bizbink\DynDNS\Entity\DomainEntity $domain = null);
 }

@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-namespace bizbink\DynDNS;
+namespace bizbink\DynDNS\Entity;
 
 /**
  * Description of DomainObject
  *
  * @author Matthew
  */
-class Domain {
+class DomainEntity {
 
     /**
      * 

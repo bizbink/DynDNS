@@ -17,21 +17,21 @@ class DigitalOceanProvider extends \bizbink\DynDNS\Provider\AbstractProvider imp
 
     /**
      * 
-     * @param \bizbink\DynDNS\Record $record 
-     * @return \bizbink\DynDNS\Record
+     * @param \bizbink\DynDNS\Entity\RecordEntity $record 
+     * @return \bizbink\DynDNS\Entity\RecordEntity
      */
-    public function setRecord(\bizbink\DynDNS\Record $record) {
+    public function setRecord(\bizbink\DynDNS\Entity\RecordEntity $record) {
             parent::setRecord($record);
             $this->buildRecordUpdateJSON($record);
     }
 
     /**
      * 
-     * @param \bizbink\DynDNS\Record $record
-     * @param \bizbink\DynDNS\Domain $domain
+     * @param \bizbink\DynDNS\Entity\RecordEntity $record
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domain
      * @return string|bool 
      */
-    public function updateRecord(\bizbink\DynDNS\Record $record = null, \bizbink\DynDNS\Domain $domain = null) {
+    public function updateRecord(\bizbink\DynDNS\Entity\RecordEntity $record = null, \bizbink\DynDNS\Entity\DomainEntity $domain = null) {
         if (isset($record)) {
             $this->setRecord($record);
         }
@@ -46,9 +46,9 @@ class DigitalOceanProvider extends \bizbink\DynDNS\Provider\AbstractProvider imp
 
     /**
      * 
-     * @param \bizbink\DynDNS\Record $record
+     * @param \bizbink\DynDNS\Entity\RecordEntity $record
      */
-    private function buildRecordUpdateJSON(\bizbink\DynDNS\Record $record) {
+    private function buildRecordUpdateJSON(\bizbink\DynDNS\Entity\RecordEntity $record) {
         $data = [];
         if (isset($record->type)) {
             $data['type'] = $record->type;

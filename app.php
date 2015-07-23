@@ -13,8 +13,8 @@ require __DIR__ . '/src/bizbink/DynDNS/Autoload.php';
 $credentials = null;
 $provider = null;
 
-$Record = new \bizbink\DynDNS\Record();
-$Domain = new \bizbink\DynDNS\Domain();
+$Record = new \bizbink\DynDNS\Entity\RecordEntity();
+$Domain = new \bizbink\DynDNS\Entity\DomainEntity();
 
 for ($x = 1; $x <= $argc - 1; $x++) {
     switch ($argv[$x]) {
@@ -63,10 +63,6 @@ for ($x = 1; $x <= $argc - 1; $x++) {
             $Record->setWeight($argv[$x + 1]);
             break;
     }
-}
-
-if ($ignoreErrors) {
-    error_reporting(0);
 }
 
 switch ($provider) {

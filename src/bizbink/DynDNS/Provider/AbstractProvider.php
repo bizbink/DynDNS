@@ -21,7 +21,7 @@ abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
     /**
      * 
-     * @return \bizbink\DynDNS\Record
+     * @return \bizbink\DynDNS\Entity\RecordEntity
      */
     public function getRecord() {
         return $this->record;
@@ -29,7 +29,7 @@ abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
     /**
      * 
-     * @return \bizbink\DynDNS\Domain
+     * @return \bizbink\DynDNS\Entity\DomainEntity
      */
     public function getDomain() {
         return $this->domain;
@@ -54,19 +54,19 @@ abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
     /**
      * 
-     * @param \bizbink\DynDNS\Record $record 
-     * @return \bizbink\DynDNS\Record
+     * @param \bizbink\DynDNS\Entity\RecordEntity $record 
+     * @return \bizbink\DynDNS\Entity\RecordEntity
      */
-    public function setRecord(\bizbink\DynDNS\Record $record) {
+    public function setRecord(\bizbink\DynDNS\Entity\RecordEntity $record) {
         return $this->record = $record;
     }
 
     /**
      * 
-     * @param \bizbink\DynDNS\Domain $domain 
-     * @return \bizbink\DynDNS\Domain
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domain 
+     * @return \bizbink\DynDNS\Entity\DomainEntity
      */
-    public function setDomain(\bizbink\DynDNS\Domain $domain) {
+    public function setDomain(\bizbink\DynDNS\Entity\DomainEntity $domain) {
         return $this->domain = $domain;
     }
 
@@ -78,13 +78,13 @@ abstract class AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
     /**
      *
-     * @var \bizbink\DynDNS\Record
+     * @var \bizbink\DynDNS\Entity\RecordEntity
      */
     protected $record;
 
     /**
      *
-     * @var \bizbink\DynDNS\Domain
+     * @var \bizbink\DynDNS\Entity\DomainEntity
      */
     protected $domain;
 
