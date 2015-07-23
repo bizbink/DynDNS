@@ -1,4 +1,9 @@
-**Example**: `-record-id 9584342995 -record-type 'A' -record-name 'www' -record-data '127.0.0.1' --ignore-errors false`
+Example:
+------
+```
+php ~/dyndns/app.php -record-id 9584342995 -record-type 'A' -record-name 'www' -record-data '127.0.0.1' --ignore-errors false
+[DynDNS] The domain 'bizbink.ca' was updated in 1.418023109436 seconds.
+```
 
 Flags | Description | Example
 --- | --- | ---
