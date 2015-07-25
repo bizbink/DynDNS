@@ -14,6 +14,17 @@ namespace bizbink\DynDNS\Entity;
  * @author Matthew
  */
 class RecordEntity {
+    
+    public function __construct($id = null, $type = null, $name = null, $data = null, $ttl = null, $priority = null, $port = null, $weight = null) {
+        $this->setId($id);
+        $this->setType($type);
+        $this->setName($name);
+        $this->setData($data);
+        $this->setTTL($ttl);
+        $this->setPriority($priority);
+        $this->setPort($port);
+        $this->setWeight($weight);
+    }
 
     /**
      * 

@@ -9,141 +9,110 @@
 namespace bizbink\DynDNS\Provider;
 
 /**
- * Description of DigitalOceanDynDNSProvider
+ * Description of DigitalOceanProvider
  *
  * @author Matthew
  */
 class DigitalOceanProvider extends \bizbink\DynDNS\Provider\AbstractProvider implements \bizbink\DynDNS\Provider\Provider {
 
     /**
-     * 
-     * @param \bizbink\DynDNS\Entity\RecordEntity $record 
-     * @return \bizbink\DynDNS\Entity\RecordEntity
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domainEntity
+     * @param \bizbink\DynDNS\Entity\RecordEntity $recordEntity
+     * @param int $page
+     * @return boolean|\bizbink\DynDNS\Entity\RecordEntity
+     * @throws \bizbink\DynDNS\Exception\UnprocessableEntityException
+     * @throws \bizbink\DynDNS\Exception\RecordNotFoundException
+     * @throws \bizbink\DynDNS\Exception\UnauthorizedAcessException
      */
-    public function setRecord(\bizbink\DynDNS\Entity\RecordEntity $record) {
-            parent::setRecord($record);
-            $this->buildRecordUpdateJSON($record);
-    }
-
-    /**
-     * 
-     * @param \bizbink\DynDNS\Entity\RecordEntity $record
-     * @param \bizbink\DynDNS\Entity\DomainEntity $domain
-     * @return string|bool 
-     */
-    public function updateRecord(\bizbink\DynDNS\Entity\RecordEntity $record = null, \bizbink\DynDNS\Entity\DomainEntity $domain = null) {
-        if (isset($record)) {
-            $this->setRecord($record);
-        }
-        if (isset($domain)) {
-            $this->setDomain($domain);
-        }
-        $this->validateDomainEntity();
-        $this->buildRecordUpdateCURL();
-        $this->executeRecordUpdateCURL();
-        $this->validateResponse();
-        return $this->getResponse();
-    }
-    
-    private function validateDomainEntity() {
-        if(!isset($this->getDomain()->name)) {
-            throw new \bizbink\DynDNS\Exception\MissingConfigPropertyException("Please check your configuration: 'domain' missing");
-        }
-    }
-
-    /**
-     * 
-     * @param \bizbink\DynDNS\Entity\RecordEntity $record
-     */
-    private function buildRecordUpdateJSON(\bizbink\DynDNS\Entity\RecordEntity $record) {
-        $data = [];
-        if (isset($record->type)) {
-            $data['type'] = $record->type;
-        }
-        if (isset($record->name)) {
-            $data['name'] = $record->name;
-        }
-        if (isset($record->data)) {
-            $data['data'] = $record->data;
-        }
-        if (isset($record->priority)) {
-            $data['priority'] = $record->priority;
-        }
-        if (isset($record->port)) {
-            $data['port'] = $record->port;
-        }
-        if (isset($record->weight)) {
-            $data['weight'] = $record->weight;
-        }
-        $this->data = json_encode($data);
-    }
-    
-    private function buildRecordUpdateCURL() {
+    public function findRecordEntity(\bizbink\DynDNS\Entity\DomainEntity $domainEntity, \bizbink\DynDNS\Entity\RecordEntity $recordEntity, $page = null) {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://' . self::API_HOST . '/v' . self::API_VERSION . '/' . 'domains/' . $this->getDomain()->getName() . '/records/' . $this->getRecord()->getId());
+        curl_setopt($ch, CURLOPT_URL, 'https://' . self::DNS_API_HOST . '/v' . self::DNS_API_VERSION . '/' . 'domains/' . $domainEntity->getName() . '/records' . ($page != null ? '?page=' . $page : ''));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->data);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::TIMEOUT);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::DNS_TIMEOUT);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . $this->config->{'credentials'}->{'token'},
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($this->data))
-        );
-        $this->ch = $ch;
-    }
-    
-    /**
-     * 
-     * @return resource|bool
-     */
-    private function executeRecordUpdateCURL() {
-        $response = curl_exec($this->ch);
-        curl_close($this->ch);
-        return $this->response = $response;
-    }
-    
-    /**
-     * 
-     * @return boolean
-     * @throws \bizbink\DynDNS\Exception\UnprocessableEntityException
-     */
-    private function validateResponse() {
-        $response = json_decode($this->response);
-        if(isset($response->{'id'}) && $response->{'id'} === 'unprocessable_entity') {
-            throw new \bizbink\DynDNS\Exception\UnprocessableEntityException($response->{'message'});
+            'Authorization: Bearer ' . (isset($this->authentication['token']) ? $this->authentication['token'] : ''),
+            'Content-Type: application/json'
+        ));
+        $responseData = curl_exec($ch);
+        $responseCode = curl_getinfo($ch)['http_code'];
+        curl_close($ch);
+        if ($responseData === false) {
+            return false;
+        } elseif ($responseCode == 401) {
+            throw new \bizbink\DynDNS\Exception\UnauthorizedAcessException("The token is not be set or incorrect");
+        } elseif ($responseCode == 404) {
+            throw new \bizbink\DynDNS\Exception\RecordNotFoundException("Unable to find record with supplied entity");
+        } elseif ($responseCode == 422) {
+            throw new \bizbink\DynDNS\Exception\UnprocessableEntityException("Unable to update record, the entity supplied is invalid");
+        } elseif ($responseCode !== 200) {
+            return false;
+        } else {
+            $this->setResponseData($responseData);
         }
-        elseif(isset($response->{'id'}) && $response->{'id'} === 'not_found') {
-            throw new \bizbink\DynDNS\Exception\RecordNotFoundException($response->{'message'});
+        $responseData = json_decode($responseData, true);
+        foreach ($responseData['domain_records'] as $record) {
+            if ($record['type'] === $recordEntity->getType() && $record['name'] === $recordEntity->getName()) {
+                return new \bizbink\DynDNS\Entity\RecordEntity($record['id'], $record['type'], $record['name'], $record['data'], null, $record['priority'], $record['port'], $record['weight']);
+            }
         }
-        elseif(isset($response->{'id'}) && $response->{'id'} === 'unauthorized') {
-            throw new \bizbink\DynDNS\Exception\UnauthorizedAcessException($response->{'message'});
+        // Recursive call for pages results
+        if (isset($responseData['links']['pages']['next']) && $responseData['links']['pages']['next'] != '') {
+            preg_match('/page=(?<page_number>\d+)/i', $responseData['links']['pages']['next'], $match);
+            if (isset($match['page_number']) && $match['page_number'] != '') {
+                return findRecordEntity($match['page_number']);
+            }
         }
-        return true;
+        throw new \bizbink\DynDNS\Exception\RecordNotFoundException("Unable to find record with supplied entity");
     }
-    
-    /**
-     *
-     * @var array 
-     */
-    protected $data;
-    
-    /**
-     *
-     * @var resource 
-     */
-    protected $ch;
-    
-    /**
-     *
-     * @var string 
-     */
-    protected $response;
 
-    const API_HOST = 'api.digitalocean.com';
-    const API_VERSION = '2';
-    const TIMEOUT = 15;
+    /**
+     * 
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domainEntity
+     * @param \bizbink\DynDNS\Entity\RecordEntity $recordEntity
+     * @return \bizbink\DynDNS\Entity\RecordEntity|boolean
+     * @throws \bizbink\DynDNS\Exception\UnprocessableEntityException
+     * @throws \bizbink\DynDNS\Exception\RecordNotFoundException
+     * @throws \bizbink\DynDNS\Exception\UnauthorizedAcessException
+     */
+    public function updateRecordEntity(\bizbink\DynDNS\Entity\DomainEntity $domainEntity, \bizbink\DynDNS\Entity\RecordEntity $recordEntity) {
+        $this->setRequestData(array('data' => $recordEntity->getData()));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://' . self::DNS_API_HOST . '/v' . self::DNS_API_VERSION . '/' . 'domains/' . $domainEntity->getName() . '/records/' . $recordEntity->getId());
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->getRequestData()));
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::DNS_TIMEOUT);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . (isset($this->authentication['token']) ? $this->authentication['token'] : ''),
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen(json_encode($this->getRequestData())))
+        );
+        $responseData = curl_exec($ch);
+        $responseCode = curl_getinfo($ch)['http_code'];
+        curl_close($ch);
+        if ($responseData === false) {
+            return false;
+        } elseif ($responseCode == 401) {
+            throw new \bizbink\DynDNS\Exception\UnauthorizedAcessException("The token is not be set or incorrect");
+        } elseif ($responseCode == 404) {
+            throw new \bizbink\DynDNS\Exception\RecordNotFoundException("Unable to find record with supplied entity");
+        } elseif ($responseCode == 422) {
+            throw new \bizbink\DynDNS\Exception\UnprocessableEntityException("Unable to update record, the entity supplied is invalid");
+        } elseif ($responseCode !== 200) {
+            return false;
+        } else {
+            $this->setResponseData($responseData);
+        }
+        $record = json_decode($responseData, true)['domain_record'];
+        return new \bizbink\DynDNS\Entity\RecordEntity($record['id'], $record['type'], $record['name'], $record['data'], null, $record['priority'], $record['port'], $record['weight']);
+    }
+
+    const DNS_API_HOST = 'api.digitalocean.com';
+    const DNS_API_VERSION = '2';
+    const DNS_TIMEOUT = 15;
 
 }

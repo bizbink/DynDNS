@@ -1,7 +1,14 @@
 {
-    "credentials": {
-        "token": "07b6a53ebf434e3d54a76863c3e8f5d8803b34efe4c8bb530973a16ca58447e5"
+    "validate": true,
+    "update": false,
+    "log-file": "log.txt",
+    "authentication": {
+        "token": "79e0e5ffa1b5f99698624bfcec3ee2d1b8e486030cbb32f8906f3fac9c8603d2"
     },
     "provider": "DigitalOcean",
-    "domain": "bizbink.ca"
+    "domain": "bizbink.ca",
+    "record-id": 7677884,
+    "record-type": "A",
+    "record-name": "@",
+    "record-data": null
 }

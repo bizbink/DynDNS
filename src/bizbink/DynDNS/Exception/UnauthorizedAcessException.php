@@ -13,6 +13,6 @@ namespace bizbink\DynDNS\Exception;
  *
  * @author Matthew
  */
-class UnauthorizedAcessException extends \Exception {
+class UnauthorizedAcessException extends \RuntimeException {
     //put your code here
 }

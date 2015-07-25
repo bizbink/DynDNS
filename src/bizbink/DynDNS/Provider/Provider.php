@@ -17,41 +17,54 @@ interface Provider {
 
     /**
      * 
-     * @return \bizbink\DynDNS\Entity\RecordEntity
+     * @return string
      */
-    public function getRecord();
-
-    /**
-     * 
-     * @return \bizbink\DynDNS\Entity\DomainEntity
-     */
-    public function getDomain();
+    public function getResponseData();
 
     /**
      * 
      * @return string
      */
-    public function getResponse();
+    public function getRequestData();
 
     /**
      * 
-     * @param \bizbink\DynDNS\Entity\RecordEntity $record 
-     * @return \bizbink\DynDNS\Entity\RecordEntity
+     * @return string $data
      */
-    public function setRecord(\bizbink\DynDNS\Entity\RecordEntity $record);
+    public function setResponseData($data);
 
     /**
      * 
-     * @param \bizbink\DynDNS\Entity\DomainEntity $domain 
-     * @return \bizbink\DynDNS\Entity\DomainEntity
+     * @return string $data
      */
-    public function setDomain(\bizbink\DynDNS\Entity\DomainEntity $domain);
+    public function setRequestData($data);
 
     /**
      * 
-     * @param \bizbink\DynDNS\Entity\RecordEntity $record
-     * @param \bizbink\DynDNS\Entity\DomainEntity $domain
-     * @return string|bool 
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domainEntity
+     * @param \bizbink\DynDNS\Entity\RecordEntity $recordEntity
+     * @param int $page
+     * @return boolean|\bizbink\DynDNS\Entity\RecordEntity
+     * @throws \bizbink\DynDNS\Exception\UnprocessableEntityException
+     * @throws \bizbink\DynDNS\Exception\RecordNotFoundException
+     * @throws \bizbink\DynDNS\Exception\UnauthorizedAcessException
      */
-    public function updateRecord(\bizbink\DynDNS\Entity\RecordEntity $record = null, \bizbink\DynDNS\Entity\DomainEntity $domain = null);
+    public function findRecordEntity(\bizbink\DynDNS\Entity\DomainEntity $domainEntity, \bizbink\DynDNS\Entity\RecordEntity $recordEntity, $page = null);
+
+    /**
+     * 
+     * @param \bizbink\DynDNS\Entity\DomainEntity $domainEntity
+     * @param \bizbink\DynDNS\Entity\RecordEntity $recordEntity
+     * @return \bizbink\DynDNS\Entity\RecordEntity|boolean
+     * @throws \bizbink\DynDNS\Exception\UnprocessableEntityException
+     * @throws \bizbink\DynDNS\Exception\RecordNotFoundException
+     * @throws \bizbink\DynDNS\Exception\UnauthorizedAcessException
+     */
+    public function updateRecordEntity(\bizbink\DynDNS\Entity\DomainEntity $domainEntity, \bizbink\DynDNS\Entity\RecordEntity $recordEntity);
+
+    /**
+     * 
+     * @return boolean|string
+     */
+    public function getExternalIp();
 }

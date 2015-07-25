@@ -1,21 +1,28 @@
+Requirements:
+------
+- PHP v5.6
+  - cURL Extension
+
 Configuration:
 ------
-You'll need to edit `config.json` before using this package.
+The default configuration file is `config.json`.
 
 Example:
 ------
 ```
-php ~/dyndns/dyndns.php -record-id 9584342995 -record-type 'A' -record-name 'www' -record-data '127.0.0.1' --ignore-errors false
-[DynDNS] The domain 'bizbink.ca' was updated in 1.418023109436 seconds.
+php ~/dyndns/dyndns.php -update -validate -record-type 'A' -record-name 'www' -record-data '127.0.0.1'
+[DynDNS] Loading configuration file.
+[DynDNS] No configuration file supplied, using 'config.json'.
+[DynDNS] The record '@' with type 'A' for 'example.com' with '24.150.195.69' successfully updated.
+[DynDNS] The record '@' with type 'A' for 'example.com' matches with '24.150.195.69' matches.
 ```
 
 Flags | Description | Example
 --- | --- | ---
--record-id | The record ID, if required. | `-record-id 9584342995`
--record-type | New record type. | `-record-type 'A'`
--record-name | New record name. | `-record-name 'www'`
+-config-file | Set configuration file. | `-record-id 9584342995`
+-update | Update record using configuration/argument. | `-record-id 9584342995`
+-validate | Validate the record matches configuration/argument or external address. | `-record-id 9584342995`
+-record-id | Record ID, if required. | `-record-id 9584342995`
+-record-type | Record type, if required. | `-record-type 'A'`
+-record-name | Record name, if required. | `-record-name 'www'`
 -record-data | New record data. | `-record-data '127.0.0.1'`
--record-priority | New record priority. | `-record-priority null`
--record-port | New record port. | `-record-port null`
--record-weight | New record weight. | `-record-weight null`
---ignore-errors | Ignore errors, will not output anything. | `--ignore-errors false`

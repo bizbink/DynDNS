@@ -13,6 +13,6 @@ namespace bizbink\DynDNS\Exception;
  *
  * @author Matthew
  */
-class UnprocessableEntityException extends \Exception {
+class UnprocessableEntityException extends \RuntimeException {
     //put your code here
 }

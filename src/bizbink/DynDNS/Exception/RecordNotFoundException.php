@@ -13,6 +13,6 @@ namespace bizbink\DynDNS\Exception;
  *
  * @author Matthew
  */
-class RecordNotFoundException extends \Exception {
+class RecordNotFoundException extends \RuntimeException {
     //put your code here
 }

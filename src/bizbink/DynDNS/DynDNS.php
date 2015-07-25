@@ -15,10 +15,6 @@ namespace bizbink\DynDNS;
  */
 class DynDNS {
 
-    public function __construct(\bizbink\DynDNS\Provider\Provider $provider) {
-        return $this->provider = $provider;
-    }
-
     /**
      * 
      * @return \bizbink\DynDNS\Provider\Provider
@@ -29,11 +25,34 @@ class DynDNS {
 
     /**
      * 
-     * @param \bizbink\DynDNS\Provider\Provider $provider 
-     * @return \bizbink\DynDNS\Provider\Provider
+     * @return array
      */
-    public function setProvder(\bizbink\DynDNS\Provider\Provider $provider) {
-        return $this->provider = $provider;
+    public function getAuthentication() {
+        return $this->authentication;
+    }
+
+    /**
+     * 
+     * @param string $provider
+     * @return \bizbink\DynDNS\Provider\Provider
+     * @throws \bizbink\DynDNS\Exception\NullProviderException
+     */
+    public function setProvder($provider) {
+        switch ($provider) {
+            case 'DigitalOcean':
+                return $this->provider = new \bizbink\DynDNS\Provider\DigitalOceanProvider($this->authentication);
+            default:
+                throw new \bizbink\DynDNS\Exception\NullProviderException();
+        }
+    }
+
+    /**
+     * 
+     * @param array $authentication 
+     * @return array
+     */
+    public function setAuthentication(array $authentication) {
+        return $this->authentication = $authentication;
     }
 
     /**
@@ -41,5 +60,11 @@ class DynDNS {
      * @var \bizbink\DynDNS\Provider\Provider 
      */
     protected $provider;
+
+    /**
+     *
+     * @var array
+     */
+    protected $authentication;
 
 }
