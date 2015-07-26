@@ -13,8 +13,8 @@ Example:
 php ~/dyndns/dyndns.php -update -validate -record-type 'A' -record-name 'www' -record-data '127.0.0.1'
 [DynDNS] Loading configuration file.
 [DynDNS] No configuration file supplied, using 'config.json'.
-[DynDNS] The record '@' with type 'A' for 'example.com' with '24.150.195.69' successfully updated.
-[DynDNS] The record '@' with type 'A' for 'example.com' matches with '24.150.195.69' matches.
+[DynDNS] The record '@' with type 'A' for 'bizbink.ca' with '127.0.0.1' successfully updated.
+[DynDNS] The record '@' with type 'A' for '@' with '127.0.0.1' matches with '127.0.0.1'.
 ```
 
 Flags | Description | Example
