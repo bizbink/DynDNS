@@ -3,11 +3,11 @@
     "update": true,
     "log-file": "log.txt",
     "authentication": {
-        "token": "79e0e5ffa1b5f99698624bfcec3ee2d1b8e486030cbb32f8906f3fac9c8603d2"
+        "token": ""
     },
     "provider": "DigitalOcean",
-    "domain": "bizbink.ca",
-    "record-id": 7677884,
+    "domain": "example.com",
+    "record-id": 9816545,
     "record-type": "A",
     "record-name": "@",
     "record-data": null
