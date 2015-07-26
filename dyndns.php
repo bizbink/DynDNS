@@ -220,7 +220,7 @@ if (isset($config['update']) || isset($config['validate'])) {
             $matches = matches($comparison1, $comparison2); // check if record matches
         }
         if ($matches) {
-            $message = "[DynDNS] The record '{$foundRecordEntity->getName()}' with type '{$comparison1->getType()}' for '{$comparison1->getName()}' with '{$comparison1->getData()}' matches with '{$comparison2->getData()}'.";
+            $message = "[DynDNS] The record '{$comparison1->getName()}' with type '{$comparison1->getType()}' for '{$comparison1->getName()}' with '{$comparison1->getData()}' matches with '{$comparison2->getData()}'.";
             fileLogger($config['log-file'], $message);
             print $message . "\n";
         } else {
