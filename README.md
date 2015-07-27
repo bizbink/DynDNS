@@ -9,7 +9,7 @@ The default configuration file is `config.json`.
 ## Usage
 
 ```
-php ~/dyndns/dyndns.php -update -validate -record-type 'A' -record-name 'www' -record-data '127.0.0.1'
+php ~/dyndns/dyndns.php -config-file 'config.json' -update -validate -record-type 'A' -record-name 'www' -record-data '127.0.0.1'
 [DynDNS] Loading configuration file.
 [DynDNS] No configuration file supplied, using 'config.json'.
 [DynDNS] The record '@' with type 'A' for 'bizbink.ca' with '127.0.0.1' successfully updated.
@@ -18,9 +18,9 @@ php ~/dyndns/dyndns.php -update -validate -record-type 'A' -record-name 'www' -r
 
 Flags | Description | Example
 --- | --- | ---
--config-file | Set configuration file. | `-record-id 9584342995`
--update | Update record using configuration/argument. | `-record-id 9584342995`
--validate | Validate the record matches configuration/argument or external address. | `-record-id 9584342995`
+-config-file | Set configuration file. | `-config-file 'config.json'`
+-update | Update record using configuration/argument. | `-update true`
+-validate | Validate the record matches configuration/argument or external address. | `-validate true`
 -record-id | Record ID, if required. | `-record-id 9584342995`
 -record-type | Record type, if required. | `-record-type 'A'`
 -record-name | Record name, if required. | `-record-name 'www'`
